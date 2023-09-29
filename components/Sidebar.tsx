@@ -68,6 +68,7 @@ export default function Sidebar() {
         {routes.map((route) => {
           return (
             <Link
+              key={route.label}
               className={`flex items-center gap-4 p-3 cursor-pointer hover:bg-white/10 rounded-lg text-sm font-medium transition ${
                 pathname === route.href && "bg-white/10"
               }`}
