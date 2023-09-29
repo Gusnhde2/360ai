@@ -18,8 +18,8 @@ export default function HomePage() {
           Explore the power of AI
         </h2>
         <p className="text-muted-foreground font-light text-sm md:text-lg text-center">
-          Explore the key metrics and insights into your AI&aposs performance at
-          a glance.
+          Explore the key metrics and insights into your AI's performance at a
+          glance.
         </p>
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4">
