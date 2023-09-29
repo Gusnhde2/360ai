@@ -55,7 +55,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-col gap-8 text-white h-full mx-4 my-6">
+    <div className="flex flex-col gap-8 text-white h-full px-4 py-6 bg-gray-900 z-50 ">
       <div className="flex items-center gap-6">
         <Image
           src={Logo}
@@ -74,7 +74,7 @@ export default function Sidebar() {
               href={route.href}
             >
               <Image src={route.icon} alt="icon" />
-              {route.label}
+              <p>{route.label}</p>
             </Link>
           );
         })}
