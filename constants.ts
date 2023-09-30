@@ -1,8 +1,21 @@
-import { Code, ImageIcon, MessageSquare, Music, VideoIcon } from "lucide-react";
+import {
+  Code,
+  ImageIcon,
+  LayoutDashboard,
+  MessageSquare,
+  Music,
+  VideoIcon,
+} from "lucide-react";
 
 export const MAX_FREE_COUNTS = 5;
 
-export const tools = [
+export const routes = [
+  {
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    href: "/dashboard",
+    color: "text-sky-500",
+  },
   {
     label: "Conversation",
     icon: MessageSquare,

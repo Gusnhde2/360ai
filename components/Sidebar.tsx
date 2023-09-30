@@ -3,53 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LucideIcon } from "lucide-react";
 
+import { routes } from "@/constants";
 import Logo from "@/public/logo.svg";
-import DashboardIcon from "@/public/dashboard.svg";
-import ConversationIcon from "@/public/conversation.svg";
-import ImageIcon from "@/public/image.svg";
-import VideoIcon from "@/public/video.svg";
-import MusicIcon from "@/public/music.svg";
-import CodeIcon from "@/public/code.svg";
-import SettingsIcon from "@/public/settings.svg";
-
-const routes = [
-  {
-    label: "Dashboard",
-    icon: DashboardIcon,
-    href: "/dashboard",
-  },
-  {
-    label: "Conversation",
-    icon: ConversationIcon,
-    href: "/conversation",
-  },
-  {
-    label: "Image Generation",
-    icon: ImageIcon,
-    href: "/image",
-  },
-  {
-    label: "Video Generation",
-    icon: VideoIcon,
-    href: "/video",
-  },
-  {
-    label: "Music Generation",
-    icon: MusicIcon,
-    href: "/music",
-  },
-  {
-    label: "Code Generation",
-    icon: CodeIcon,
-    href: "/code",
-  },
-  {
-    label: "Settings",
-    icon: SettingsIcon,
-    href: "/settings",
-  },
-];
+import { cn } from "@/lib/utils";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -74,8 +32,15 @@ export default function Sidebar() {
               }`}
               href={route.href}
             >
-              <Image src={route.icon} alt="icon" />
-              <p>{route.label}</p>
+              <div className="flex items-center flex-1">
+                <route.icon
+                  className={cn(
+                    "h-5 w-5 mr-3",
+                    pathname === route.href && route.color
+                  )}
+                />
+                {route.label}
+              </div>
             </Link>
           );
         })}
