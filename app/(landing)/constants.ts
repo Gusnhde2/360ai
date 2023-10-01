@@ -1,4 +1,4 @@
-import { ParticlesProps } from "react-particles";
+import { ParticlesProps } from "react-tsparticles";
 
 export const config: ParticlesProps = {
   background: {
