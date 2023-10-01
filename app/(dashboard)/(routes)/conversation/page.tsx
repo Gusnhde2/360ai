@@ -1,6 +1,7 @@
 "use client";
-
 import { MessageSquare } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -14,11 +15,29 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { formSchema } from "./constants";
+import { useUser } from "@clerk/nextjs";
+import Image from "next/image";
+import Logo from "@/public/logo.svg";
+
+interface ConversationQuestion {
+  prompt: string;
+  answer: string;
+}
 
 export default function Conversation() {
+  const [messages, setMessages] = useState<Array<ConversationQuestion>>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
+
+  const user = useUser();
+
+  console.log(user.user?.imageUrl);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,8 +48,38 @@ export default function Conversation() {
   const isLoading = form.formState.isLoading;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      const response = await fetch("/api/conversation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: values.prompt }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessages((current: any) => [
+          ...current,
+          {
+            prompt: values.prompt,
+            answer: data.message.content,
+          },
+        ]);
+        console.log(data.message.content);
+        form.reset();
+      } else {
+        const errorMessage = await response.text();
+        setError(errorMessage);
+      }
+    } catch (error: any) {
+      console.log(error);
+      setError("An error occurred while processing your request.");
+    } finally {
+      router.refresh();
+    }
   };
+
   return (
     <div>
       <Headnig
@@ -43,14 +92,13 @@ export default function Conversation() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="rounded-lg border w-full p4 px-3 md: px-6 focus-within:shadow-sm grid grid-cols-12 gap-2 items-center"
+          className="rounded-lg border p4 mx-10 px-3 py-6 md:px-6 md:py-3 focus-within:shadow-sm grid grid-cols-12 gap-2 items-center"
         >
           <FormField
             control={form.control}
             name="prompt"
             render={({ field }) => (
               <FormItem className="col-span-12 lg:col-span-10 p-2 ">
-                {/* <FormLabel>Username</FormLabel> */}
                 <FormControl className="m-0 p-0">
                   <Input
                     className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
@@ -68,7 +116,43 @@ export default function Conversation() {
           </Button>
         </form>
       </Form>
-      <div className="space-y-4 mt-4">Message content</div>
+      {messages.map((message, index) => (
+        <div
+          key={index}
+          className={cn(
+            "py-8 px-10 w-full flex flex-col items-start  rounded-lg"
+          )}
+        >
+          <div className="flex items-center gap-8 p-4 w-full rounded-lg">
+            <img
+              src={user.user?.imageUrl}
+              alt="profile-picture"
+              style={{
+                borderRadius: "100%",
+                width: "2.5rem",
+                height: "2.5rem",
+              }}
+            />
+            <p className="text-sm">{message.prompt}</p>
+          </div>
+          {isLoading ? (
+            <p>...loading</p>
+          ) : (
+            <div className="flex items-center gap-8 bg-slate-200 p-4 w-full rounded-lg">
+              <Image
+                src={Logo}
+                alt="logo"
+                style={{
+                  borderRadius: "100%",
+                  width: "2.5rem",
+                  height: "2.5rem",
+                }}
+              />
+              <p className="text-sm">{message.answer}</p>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
