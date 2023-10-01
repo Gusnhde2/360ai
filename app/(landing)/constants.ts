@@ -1,6 +1,6 @@
-import { ParticlesProps } from "react-tsparticles";
+import { IParticlesProps } from "react-tsparticles";
 
-export const config: ParticlesProps = {
+export const config: IParticlesProps = {
   background: {
     color: {
       value: "#fff",
