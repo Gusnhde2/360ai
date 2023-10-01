@@ -36,8 +36,6 @@ export default function Conversation() {
 
   const user = useUser();
 
-  console.log(user.user?.imageUrl);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,14 +64,12 @@ export default function Conversation() {
             answer: data.message.content,
           },
         ]);
-        console.log(data.message.content);
         form.reset();
       } else {
-        const errorMessage = await response.text();
-        setError(errorMessage);
+        const errorMessage = await response.json();
+        setError(errorMessage.error.message);
       }
     } catch (error: any) {
-      console.log(error);
       setError("An error occurred while processing your request.");
     } finally {
       router.refresh();

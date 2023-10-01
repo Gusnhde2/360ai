@@ -14,6 +14,11 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ message: chatCompletion.choices[0].message });
   } catch (error) {
-    return error;
+    return NextResponse.json({
+      status: 500,
+      body: JSON.stringify({
+        error: "An error occurred while processing your request.",
+      }),
+    });
   }
 }
