@@ -8,8 +8,6 @@ import { loadSlim } from "tsparticles-slim";
 import { Button } from "@/components/ui/button";
 import Logo from "@/public/logo.svg";
 
-import { config } from "./constants";
-
 import type { Container, Engine } from "tsparticles-engine";
 export default function Home() {
   const router = useRouter();
