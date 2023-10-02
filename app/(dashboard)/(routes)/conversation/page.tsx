@@ -88,7 +88,7 @@ export default function Conversation() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="rounded-lg border p4 mx-10 px-3 py-6 md:px-6 md:py-3 focus-within:shadow-sm grid grid-cols-12 gap-2 items-center"
+          className="rounded-lg border p4 mx-2 lg:mx-10 px-3 py-3 md:px-6 md:py-3 focus-within:shadow-sm grid grid-cols-12 gap-2 items-center"
         >
           <FormField
             control={form.control}
@@ -97,7 +97,7 @@ export default function Conversation() {
               <FormItem className="col-span-12 lg:col-span-10 p-2 ">
                 <FormControl className="m-0 p-0">
                   <Input
-                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                    className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent p-4"
                     disabled={isLoading}
                     {...field}
                   />
@@ -116,7 +116,7 @@ export default function Conversation() {
         <div
           key={index}
           className={cn(
-            "py-8 px-10 w-full flex flex-col items-start  rounded-lg"
+            "py-8 px-3 lg:px-10 w-full flex flex-col items-start  rounded-lg"
           )}
         >
           <div className="flex items-center gap-8 p-4 w-full rounded-lg">

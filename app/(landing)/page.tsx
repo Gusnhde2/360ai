@@ -6,7 +6,8 @@ import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 
 import { Button } from "@/components/ui/button";
-import Logo from "@/public/logo.svg";
+import LogoBack from "@/public/logo-back.svg";
+import LogoFront from "@/public/logo-front.svg";
 
 import type { Container, Engine } from "tsparticles-engine";
 export default function Home() {
@@ -33,7 +34,7 @@ export default function Home() {
                 value: "#fff",
               },
             },
-            fpsLimit: 500,
+            fpsLimit: 1000,
             interactivity: {
               events: {
                 onClick: {
@@ -51,7 +52,7 @@ export default function Home() {
                   quantity: 4,
                 },
                 repulse: {
-                  distance: 200,
+                  distance: 100,
                   duration: 0.4,
                 },
               },
@@ -61,7 +62,7 @@ export default function Home() {
                 value: "#222",
               },
               links: {
-                color: "#222",
+                color: "#333",
                 distance: 150,
                 enable: true,
                 opacity: 0.5,
@@ -73,7 +74,7 @@ export default function Home() {
                 outModes: {
                   default: "bounce",
                 },
-                random: false,
+                random: true,
                 speed: 2,
                 straight: false,
               },
@@ -91,15 +92,23 @@ export default function Home() {
                 type: "circle",
               },
               size: {
-                value: { min: 1, max: 5 },
+                value: { min: 1, max: 8 },
               },
             },
             detectRetina: true,
           }}
         />
       </div>
-      <div className="flex flex-col items-center gap-3 mt-64">
-        <Image src={Logo} alt="logo" className="z-20" />
+      <div className="flex flex-col items-center gap-3 mt-64 realtive">
+        <div className="z-20 ">
+          <Image src={LogoBack} alt="logo" className="z-20" />
+
+          <Image
+            src={LogoFront}
+            alt="logo"
+            className="z-30 absolute top-64  hover:animate-spin delay-75	"
+          />
+        </div>
         <h1 className="text-3xl font-semibold z-20">Welcome to 360AI</h1>
         <Button
           onClick={() => router.push("/dashboard")}
