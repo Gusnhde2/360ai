@@ -18,10 +18,11 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { formSchema } from "./constants";
+import { formSchema } from "@/constants";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Logo from "@/public/logo.svg";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface ConversationQuestion {
   prompt: string;
@@ -31,6 +32,7 @@ interface ConversationQuestion {
 export default function Conversation() {
   const [messages, setMessages] = useState<Array<ConversationQuestion>>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -43,9 +45,8 @@ export default function Conversation() {
     },
   });
 
-  const isLoading = form.formState.isLoading;
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
     try {
       const response = await fetch("/api/conversation", {
         method: "POST",
@@ -64,10 +65,12 @@ export default function Conversation() {
             answer: data.message.content,
           },
         ]);
+        setIsLoading(false);
         form.reset();
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error.message);
+        setIsLoading(false);
       }
     } catch (error: any) {
       setError("An error occurred while processing your request.");
@@ -131,24 +134,25 @@ export default function Conversation() {
             />
             <p className="text-sm">{message.prompt}</p>
           </div>
-          {isLoading ? (
-            <p>...loading</p>
-          ) : (
-            <div className="flex items-center gap-8 bg-slate-200 p-4 w-full rounded-lg">
-              <Image
-                src={Logo}
-                alt="logo"
-                style={{
-                  borderRadius: "100%",
-                  width: "2.5rem",
-                  height: "2.5rem",
-                }}
-              />
-              <p className="text-sm">{message.answer}</p>
-            </div>
-          )}
+          <div className="flex items-center gap-8 bg-slate-200 p-4 w-full rounded-lg">
+            <Image
+              src={Logo}
+              alt="logo"
+              style={{
+                borderRadius: "100%",
+                width: "2.5rem",
+                height: "2.5rem",
+              }}
+            />
+            <p className="text-sm">{message.answer}</p>
+          </div>
         </div>
       ))}
+      {isLoading && (
+        <div className="flex w-full justify-center mt-10">
+          <LoadingSpinner />
+        </div>
+      )}
     </div>
   );
 }

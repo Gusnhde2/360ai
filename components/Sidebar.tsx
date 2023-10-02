@@ -3,17 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LucideIcon } from "lucide-react";
 
 import { routes } from "@/constants";
-import Logo from "@/public/logo.svg";
 import { cn } from "@/lib/utils";
+import Logo from "@/public/logo.svg";
 
 export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-col gap-8 text-white h-full px-4 py-6 bg-gray-900 z-50 ">
+    <div className="fixed flex flex-col gap-8 text-white h-full w-64 px-4 py-6 bg-gray-900 z-50 ">
       <div className="flex items-center gap-6">
         <Image
           src={Logo}
