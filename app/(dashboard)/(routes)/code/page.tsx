@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import ReactMarkdown from "react-markdown";
 
-import Headnig from "@/components/Heading";
+import Heading from "@/components/Heading";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -82,7 +82,7 @@ export default function Code() {
 
   return (
     <div>
-      <Headnig
+      <Heading
         title="Code generation"
         description="Generate code using descriptive text."
         icon={MessageSquare}

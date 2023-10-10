@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import Headnig from "@/components/Heading";
+import Heading from "@/components/Heading";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -81,7 +81,7 @@ export default function Conversation() {
 
   return (
     <div>
-      <Headnig
+      <Heading
         title="Conversation"
         description="Ask me anything."
         icon={MessageSquare}

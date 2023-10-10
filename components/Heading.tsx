@@ -8,7 +8,7 @@ interface HeadingProps {
   iconColor?: string;
   bgColor?: string;
 }
-export default function Headnig({
+export default function Heading({
   title,
   description,
   icon: Icon,
@@ -16,12 +16,12 @@ export default function Headnig({
   bgColor,
 }: HeadingProps) {
   return (
-    <div className="px-4 lg:px-8 flex items-center justify-center lg:justify-start gap-x-3 mb-8">
+    <div className="px-4 lg:px-8 flex items-start justify-center lg:justify-start gap-x-3 mb-8 mt-5">
       <div className={cn("p-2 w-fit rounded-md", bgColor)}>
         <Icon className={cn("w-10 h-10", iconColor)} />
       </div>
       <div>
-        <h2 className="text-3xl font-bold">{title}</h2>
+        <h2 className="text-2xl font-bold">{title}</h2>
         <p className="text-s, text-muted-foreground">{description}</p>
       </div>
     </div>
