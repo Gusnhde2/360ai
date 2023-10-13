@@ -1,5 +1,5 @@
 "use client";
-import { MessageSquare } from "lucide-react";
+import { ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import Heading from "@/components/Heading";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -20,7 +21,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { amountOptions, formSchema, resolutionOptions } from "./constants";
-import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function ImagePage() {
   const [images, setImages] = useState<string[]>([]);
@@ -74,9 +74,9 @@ export default function ImagePage() {
       <Heading
         title="Image generation"
         description="Generate image using descriptive text."
-        icon={MessageSquare}
-        iconColor="text-emerald-500"
-        bgColor="bg-green-700/10"
+        icon={ImageIcon}
+        iconColor="text-pink-700"
+        bgColor="bg-pink-700/10"
       />
       <div>
         <Form {...form}>

@@ -1,12 +1,14 @@
 "use client";
-import { MessageSquare } from "lucide-react";
+import { CodeIcon } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 import ReactMarkdown from "react-markdown";
+import * as z from "zod";
 
 import Heading from "@/components/Heading";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,14 +18,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { formSchema } from "@/constants";
-import { useUser } from "@clerk/nextjs";
-import Image from "next/image";
+import { cn } from "@/lib/utils";
 import Logo from "@/public/logo.svg";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { useUser } from "@clerk/nextjs";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface ConversationQuestion {
   prompt: string;
@@ -85,8 +84,8 @@ export default function Code() {
       <Heading
         title="Code generation"
         description="Generate code using descriptive text."
-        icon={MessageSquare}
-        iconColor="text-emerald-500"
+        icon={CodeIcon}
+        iconColor="text-green-700"
         bgColor="bg-green-700/10"
       />
       <Form {...form}>
