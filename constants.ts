@@ -5,6 +5,7 @@ import {
   MessageSquare,
   Music,
   VideoIcon,
+  SettingsIcon,
 } from "lucide-react";
 import * as z from "zod";
 
@@ -55,5 +56,10 @@ export const routes = [
     color: "text-green-700",
     bgColor: "bg-green-700/10",
     href: "/code",
+  },
+  {
+    label: "Settings",
+    icon: SettingsIcon,
+    href: "/settings",
   },
 ];

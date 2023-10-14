@@ -1,17 +1,14 @@
 import Image from "next/image";
 
-import LogoBack from "@/public/logo-back.svg";
-import LogoFront from "@/public/logo-front.svg";
+import Logo from "@/public/logo.svg";
 
 export default function LoadingSpinner() {
   return (
-    <div style={{ position: "relative" }}>
-      <Image src={LogoBack} alt="logo" />
+    <div className="z-20">
       <Image
-        src={LogoFront}
+        src={Logo}
         alt="logo"
-        className="loadingSpinner"
-        style={{ position: "absolute", top: "0" }}
+        className="z-30 absolute top-64 animate-spin delay-75	"
       />
     </div>
   );

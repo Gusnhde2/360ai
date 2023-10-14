@@ -85,8 +85,8 @@ export default function Conversation() {
         title="Conversation"
         description="Ask me anything."
         icon={MessageSquare}
-        iconColor="text-emerald-500"
-        bgColor="bg-emerald-500/10"
+        iconColor="text-violet-500"
+        bgColor="bg-violet-500/10"
       />
       <Form {...form}>
         <form

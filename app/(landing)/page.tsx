@@ -100,9 +100,8 @@ export default function Home() {
         />
       </div>
       <div className="flex flex-col items-center gap-3 mt-64 realtive">
-        <div className="z-20 ">
+        <div className="z-20">
           <Image src={LogoBack} alt="logo" className="z-20" />
-
           <Image
             src={LogoFront}
             alt="logo"
