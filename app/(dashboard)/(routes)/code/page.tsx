@@ -9,6 +9,7 @@ import * as z from "zod";
 
 import Heading from "@/components/Heading";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -29,9 +30,14 @@ interface ConversationQuestion {
   answer: string;
 }
 
+interface ErrorMessage {
+  error: string;
+  status: number;
+}
+
 export default function Code() {
   const [messages, setMessages] = useState<Array<ConversationQuestion>>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorMessage | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -69,11 +75,11 @@ export default function Code() {
         form.reset();
       } else {
         const errorMessage = await response.json();
-        setError(errorMessage.error.message);
+        setError(errorMessage);
         setIsLoading(false);
       }
     } catch (error: any) {
-      setError("An error occurred while processing your request.");
+      setError(error);
     } finally {
       router.refresh();
     }
@@ -163,6 +169,18 @@ export default function Code() {
             </div>
           </div>
         ))}
+        {error && (
+          <Modal
+            title={
+              error.status === 403
+                ? "You have used all free tokens"
+                : "Something went wrong"
+            }
+            message={error.error}
+            closeModal={() => setError(null)}
+            status={error.status}
+          />
+        )}
         {isLoading && (
           <div className="flex w-full justify-center mt-10">
             <LoadingSpinner />

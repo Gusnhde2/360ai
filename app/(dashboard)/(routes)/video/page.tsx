@@ -7,6 +7,7 @@ import * as z from "zod";
 
 import Heading from "@/components/Heading";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,9 +21,14 @@ import { formSchema } from "@/constants";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+interface ErrorMessage {
+  error: string;
+  status: number;
+}
+
 export default function Video() {
   const [video, setVideo] = useState<string>();
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorMessage | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -54,11 +60,11 @@ export default function Video() {
         form.reset();
       } else {
         const errorMessage = await response.json();
-        setError(errorMessage.error.message);
+        setError(errorMessage);
         setIsLoading(false);
       }
     } catch (error: any) {
-      setError("An error occurred while processing your request.");
+      setError(error);
     } finally {
       router.refresh();
     }
@@ -104,6 +110,18 @@ export default function Video() {
         <video controls className="w-full aspect-video mt-8 rounded-lg">
           <source src={video} />
         </video>
+      )}
+      {error && (
+        <Modal
+          title={
+            error.status === 403
+              ? "You have used all free tokens"
+              : "Something went wrong"
+          }
+          message={error.error}
+          closeModal={() => setError(null)}
+          status={error.status}
+        />
       )}
       {isLoading && (
         <div className="flex w-full justify-center mt-10">

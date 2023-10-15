@@ -8,6 +8,7 @@ import * as z from "zod";
 
 import Heading from "@/components/Heading";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -22,10 +23,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { amountOptions, formSchema, resolutionOptions } from "./constants";
 
+interface ErrorMessage {
+  error: string;
+  status: number;
+}
+
 export default function ImagePage() {
   const [images, setImages] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [numberOfImages, setNumberOfImages] = useState<number[]>([]);
+  const [error, setError] = useState<ErrorMessage | null>(null);
 
   const router = useRouter();
 
@@ -60,10 +67,11 @@ export default function ImagePage() {
         form.reset();
       } else {
         const errorMessage = await response.json();
+        setError(errorMessage);
         setIsLoading(false);
       }
     } catch (error: any) {
-      console.error(error);
+      setError(error);
     } finally {
       router.refresh();
     }
@@ -165,6 +173,18 @@ export default function ImagePage() {
         </Form>
       </div>
       <div className="flex flex-col  md:flex-row w-full p-4 md:p-10 justify-center gap-6 justify-center align-center">
+        {error && (
+          <Modal
+            title={
+              error.status === 403
+                ? "You have used all free tokens"
+                : "Something went wrong"
+            }
+            message={error.error}
+            closeModal={() => setError(null)}
+            status={error.status}
+          />
+        )}
         {isLoading &&
           numberOfImages.map((_, index) => (
             <div key={index} className="flex justify-center">

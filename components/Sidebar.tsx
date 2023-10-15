@@ -7,8 +7,13 @@ import { usePathname } from "next/navigation";
 import { routes } from "@/constants";
 import { cn } from "@/lib/utils";
 import Logo from "@/public/logo.svg";
+import FreeApiLimit from "./FreeApiLimit";
 
-export default function Sidebar() {
+interface SidebarProps {
+  apiLimitCount: number;
+}
+
+export default function Sidebar({ apiLimitCount = 0 }: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -44,6 +49,7 @@ export default function Sidebar() {
           );
         })}
       </div>
+      <FreeApiLimit apiLimitCount={apiLimitCount} />
     </div>
   );
 }

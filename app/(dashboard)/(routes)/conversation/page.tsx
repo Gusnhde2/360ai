@@ -1,11 +1,14 @@
 "use client";
 import { MessageSquare } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import Heading from "@/components/Heading";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,23 +18,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { formSchema } from "@/constants";
-import { useUser } from "@clerk/nextjs";
-import Image from "next/image";
+import { cn } from "@/lib/utils";
 import Logo from "@/public/logo.svg";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { useUser } from "@clerk/nextjs";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface ConversationQuestion {
   prompt: string;
   answer: string;
 }
 
+interface ErrorMessage {
+  error: string;
+  status: number;
+}
+
 export default function Conversation() {
   const [messages, setMessages] = useState<Array<ConversationQuestion>>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorMessage | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -69,11 +74,11 @@ export default function Conversation() {
         form.reset();
       } else {
         const errorMessage = await response.json();
-        setError(errorMessage.error.message);
+        setError(errorMessage);
         setIsLoading(false);
       }
     } catch (error: any) {
-      setError("An error occurred while processing your request.");
+      setError(error);
     } finally {
       router.refresh();
     }
@@ -148,6 +153,18 @@ export default function Conversation() {
           </div>
         </div>
       ))}
+      {error && (
+        <Modal
+          title={
+            error.status === 403
+              ? "You have used all free tokens"
+              : "Something went wrong"
+          }
+          message={error.error}
+          closeModal={() => setError(null)}
+          status={error.status}
+        />
+      )}
       {isLoading && (
         <div className="flex w-full justify-center mt-10">
           <LoadingSpinner />
