@@ -3,6 +3,7 @@ import { OpenAI } from "openai";
 
 import { increaseApiCount, userApiLimit } from "@/lib/api-limit";
 import { auth } from "@clerk/nextjs";
+import { checkSubscription } from "@/lib/subscription";
 
 export async function POST(req: NextRequest) {
   const { userId } = auth();
@@ -18,16 +19,13 @@ export async function POST(req: NextRequest) {
 
   const freeTrial = await userApiLimit();
 
-  if (!freeTrial)
-    return NextResponse.json(
-      {
-        error:
-          "You have reached your API limit. Please upgrade your account to continue using the API.",
-        status: 403,
-      },
-      { status: 403 }
-    );
-  await increaseApiCount();
+  const isPro = await checkSubscription();
+
+  if (!freeTrial && !isPro) {
+    return new NextResponse("Free trial has expired. Please upgrade to pro.", {
+      status: 403,
+    });
+  }
 
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -44,6 +42,9 @@ export async function POST(req: NextRequest) {
       ],
       model: "gpt-3.5-turbo",
     });
+    if (!isPro) {
+      await increaseApiCount();
+    }
     return NextResponse.json({ message: chatCompletion.choices[0].message });
   } catch (error) {
     return NextResponse.json({

@@ -7,13 +7,15 @@ import { usePathname } from "next/navigation";
 import { routes } from "@/constants";
 import { cn } from "@/lib/utils";
 import Logo from "@/public/logo.svg";
+
 import FreeApiLimit from "./FreeApiLimit";
 
 interface SidebarProps {
   apiLimitCount: number;
+  isPro: boolean;
 }
 
-export default function Sidebar({ apiLimitCount = 0 }: SidebarProps) {
+export default function Sidebar({ apiLimitCount = 0, isPro }: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -49,7 +51,7 @@ export default function Sidebar({ apiLimitCount = 0 }: SidebarProps) {
           );
         })}
       </div>
-      <FreeApiLimit apiLimitCount={apiLimitCount} />
+      {!isPro && <FreeApiLimit apiLimitCount={apiLimitCount} isPro={isPro} />}
     </div>
   );
 }

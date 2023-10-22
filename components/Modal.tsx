@@ -2,11 +2,13 @@
 
 import { RocketIcon, ShieldXIcon } from "lucide-react";
 import { Button } from "./ui/button";
+import { SubscriptionButton } from "./SubscriptionButton";
 
 interface ModalProps {
   title?: string;
   message?: string;
   status?: number;
+  isPro?: boolean;
   closeModal: () => void;
 }
 
@@ -14,6 +16,7 @@ export default function Modal({
   title,
   message,
   status,
+  isPro,
   closeModal,
 }: ModalProps) {
   return (
@@ -37,11 +40,7 @@ export default function Modal({
               {message}
             </div>
             <div className="flex w-full justify-center gap-2">
-              {status === 403 && (
-                <Button variant="premium">
-                  Buy premium <RocketIcon />
-                </Button>
-              )}
+              {!isPro && <SubscriptionButton isPro={isPro || false} />}
               <Button onClick={closeModal}>Go back</Button>
             </div>
           </div>

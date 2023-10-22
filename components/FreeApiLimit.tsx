@@ -2,12 +2,18 @@ import { MAX_FREE_COUNTS } from "@/constants";
 import { Button } from "./ui/button";
 import { RocketIcon } from "lucide-react";
 import Image from "next/image";
+import { SubscriptionButton } from "./SubscriptionButton";
+import { checkSubscription } from "@/lib/subscription";
 
 interface FreeApiLimitProps {
   apiLimitCount: number;
+  isPro: boolean;
 }
 
-export default function FreeApiLimit({ apiLimitCount = 0 }: FreeApiLimitProps) {
+export default function FreeApiLimit({
+  apiLimitCount = 0,
+  isPro,
+}: FreeApiLimitProps) {
   return (
     <div className="flex flex-col gap-5 bg-white/10 py-5 px-5 rounded-lg">
       <div className="flex flex-col gap-2">
@@ -24,9 +30,7 @@ export default function FreeApiLimit({ apiLimitCount = 0 }: FreeApiLimitProps) {
           ></div>
         </div>
       </div>
-      <Button variant="premium">
-        Buy premium <RocketIcon />
-      </Button>
+      <SubscriptionButton isPro={isPro} />
     </div>
   );
 }
