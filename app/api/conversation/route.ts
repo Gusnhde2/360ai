@@ -34,8 +34,13 @@ export async function POST(req: NextRequest) {
   const { prompt } = await req.json();
   try {
     const chatCompletion = await openai.chat.completions.create({
+      model: "gpt-4-1106-preview",
       messages: [{ role: "user", content: prompt }],
-      model: "gpt-3.5-turbo",
+      temperature: 0,
+      max_tokens: 256,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
     });
     if (!isPro) increaseApiCount();
     return NextResponse.json({ message: chatCompletion.choices[0].message });
