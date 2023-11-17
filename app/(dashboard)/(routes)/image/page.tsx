@@ -21,7 +21,12 @@ import {
 } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { amountOptions, formSchema, resolutionOptions } from "./constants";
+import {
+  amountOptions,
+  formSchema,
+  modelOptions,
+  resolutionOptions,
+} from "./constants";
 
 interface ErrorMessage {
   error: string;
@@ -40,12 +45,14 @@ export default function ImagePage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       prompt: "",
+      model: "dall-e-3",
       amount: "1",
       resolution: "1024x1024",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setImages([]);
     setNumberOfImages(Array.from(Array(parseInt(values.amount)).keys()));
     setIsLoading(true);
     try {
@@ -53,6 +60,7 @@ export default function ImagePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          model: values.model,
           prompt: values.prompt,
           amount: parseInt(values.amount),
           resolution: values.resolution,
@@ -109,6 +117,33 @@ export default function ImagePage() {
             />
             <FormField
               control={form.control}
+              name="model"
+              render={({ field }) => (
+                <FormItem className="col-span-12 lg:col-span-2">
+                  <Select
+                    disabled={isLoading}
+                    onValueChange={field.onChange}
+                    value={field.value.toString()}
+                    defaultValue={field.value.toString()}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {modelOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="amount"
               render={({ field }) => (
                 <FormItem className="col-span-12 lg:col-span-2">
@@ -124,11 +159,17 @@ export default function ImagePage() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {amountOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
+                      {form.getValues("model") === "dall-e-2" ? (
+                        amountOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem key={1} value={"1"}>
+                          1 Photo
                         </SelectItem>
-                      ))}
+                      )}
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -151,11 +192,17 @@ export default function ImagePage() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {resolutionOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
+                      {form.getValues("model") === "dall-e-3" ? (
+                        resolutionOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem key={1} value={"1024x1024"}>
+                          1024x1024
                         </SelectItem>
-                      ))}
+                      )}
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -187,7 +234,7 @@ export default function ImagePage() {
         )}
         {isLoading &&
           numberOfImages.map((_, index) => (
-            <div key={index} className="flex justify-center">
+            <div key={index} className="flex justify-center w-full">
               <LoadingSpinner />
             </div>
           ))}

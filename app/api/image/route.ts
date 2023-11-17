@@ -31,16 +31,20 @@ export async function POST(req: NextRequest) {
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-  const { prompt, amount, resolution } = await req.json();
+  const { prompt, amount, resolution, model } = await req.json();
   try {
     const response = await openai.images.generate({
+      model: model,
       prompt: prompt,
       n: amount,
       size: resolution,
+      quality: "hd",
     });
+
     if (!isPro) increaseApiCount();
     return NextResponse.json({ images: response.data });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({
       status: 500,
       body: JSON.stringify({

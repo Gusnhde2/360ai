@@ -10,7 +10,6 @@ export default async function DashboardLayout({
 }) {
   const apiLimitCount = await getApiLimitCount();
   const isPro = await checkSubscription();
-  console.log(isPro);
   return (
     <div className="relative h-full md:flex">
       <div className="hidden md:flex md:w-72 md:flex-col bg-gray-900 h-full">
