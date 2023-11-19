@@ -246,7 +246,13 @@ export default function ImagePage() {
             className="flex flex-col gap-2 align-center md:justfy-center"
           >
             <div className="relative aspect-square w-50 h-50 md:w-80 md:h-80">
-              <Image fill alt="Generated" src={src} />
+              <Image
+                fill
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYA"
+                alt="Generated"
+                src={src}
+              />
             </div>
             <Button onClick={() => window.open(src)}>Download</Button>
           </div>
