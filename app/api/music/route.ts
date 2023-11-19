@@ -26,9 +26,12 @@ export async function POST(req: NextRequest) {
   const isPro = await checkSubscription();
 
   if (!freeTrial && !isPro) {
-    return new NextResponse("Free trial has expired. Please upgrade to pro.", {
-      status: 403,
-    });
+    return NextResponse.json(
+      { error: "Free trial has expired. Please upgrade to pro.", status: 403 },
+      {
+        status: 403,
+      }
+    );
   }
 
   await increaseApiCount();

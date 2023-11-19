@@ -46,11 +46,11 @@ export async function POST(req: NextRequest) {
       await increaseApiCount();
     }
     return NextResponse.json({ message: chatCompletion.choices[0].message });
-  } catch (error) {
+  } catch (error: any) {
     return NextResponse.json({
       status: 500,
       body: JSON.stringify({
-        error: "An error occurred while processing your request.",
+        error: error ? error.message : "Something went wrong",
       }),
     });
   }

@@ -65,6 +65,7 @@ export default function Music() {
       }
     } catch (error: any) {
       setError(error);
+      setIsLoading(false);
     } finally {
       router.refresh();
     }

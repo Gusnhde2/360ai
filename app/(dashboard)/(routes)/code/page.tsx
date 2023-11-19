@@ -80,6 +80,7 @@ export default function Code() {
       }
     } catch (error: any) {
       setError(error);
+      setIsLoading(false);
     } finally {
       router.refresh();
     }

@@ -22,9 +22,9 @@ export default function Modal({
   return (
     <div
       onClick={closeModal}
-      className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50 "
     >
-      <div className="w-11/12 h-11/12 md:w-1/3 md:h-1/3 bg-white rounded-lg">
+      <div className="w-11/12 h-11/12 md:w-1/3 md:h-1/3 bg-white rounded-lg min-h-44">
         <div className="flex flex-col items-center justify-center p-8 w-full h-full gap-8">
           <div className="text-9xl">
             <ShieldXIcon />

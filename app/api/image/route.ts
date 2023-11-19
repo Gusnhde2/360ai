@@ -22,9 +22,12 @@ export async function POST(req: NextRequest) {
   const isPro = await checkSubscription();
 
   if (!freeTrial && !isPro) {
-    return new NextResponse("Free trial has expired. Please upgrade to pro.", {
-      status: 403,
-    });
+    return NextResponse.json(
+      { error: "Free trial has expired. Please upgrade to pro.", status: 403 },
+      {
+        status: 403,
+      }
+    );
   }
 
   const openai = new OpenAI({
@@ -43,13 +46,16 @@ export async function POST(req: NextRequest) {
 
     if (!isPro) increaseApiCount();
     return NextResponse.json({ images: response.data });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({
-      status: 500,
-      body: JSON.stringify({
-        error: "An error occurred while processing your request.",
-      }),
-    });
+  } catch (error: string | any) {
+    return NextResponse.json(
+      {
+        status: 500,
+        error:
+          model === "dall-e-3"
+            ? "DALL-E-3 is currently unavailable. Please try again later."
+            : JSON.stringify(error.message),
+      },
+      { status: 500 }
+    );
   }
 }

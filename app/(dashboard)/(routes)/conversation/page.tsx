@@ -76,9 +76,11 @@ export default function Conversation() {
         const errorMessage = await response.json();
         setError(errorMessage);
         setIsLoading(false);
+        console.log(errorMessage);
       }
     } catch (error: any) {
       setError(error);
+      setIsLoading(false);
     } finally {
       router.refresh();
     }

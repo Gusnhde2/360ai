@@ -79,7 +79,9 @@ export default function ImagePage() {
         setIsLoading(false);
       }
     } catch (error: any) {
+      console.log(error);
       setError(error);
+      setIsLoading(false);
     } finally {
       router.refresh();
     }
