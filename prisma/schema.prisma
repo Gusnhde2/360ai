@@ -1,7 +1,7 @@
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -25,6 +25,39 @@ model UserSubscription {
   stripePriceId String? @unique @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_start")
   count     Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserComments {
+  userId    String 
+  postId    String    @id @default(uuid())
+  userName  String
+  article   String
+  comment   String  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Assistant {
+  id       String        @id @default(uuid())
+  assistantId String      @unique
+  threadId String        @unique
+  name     String
+  lastname String
+  sex      String
+  language String
+  picture  String
+  authId   String
+  lastSeen DateTime
+  lastMessage String
+}
+
+model KlixGenUserApiLimit {
+  id        String     @id @default(uuid())
+  userId    String @unique
+  count     Int @default(0)
+  limit     Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
